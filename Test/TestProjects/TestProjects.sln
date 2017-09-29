@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TesingFolders", "TesingFold
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldStyleProject2AllErrors", "OldStyleProject2AllErrors\OldStyleProject2AllErrors.csproj", "{BAA70CB1-7613-42A3-83F6-A387BBB2692E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmptyFolder", "EmptyFolder", "{F449F444-CE24-4566-9D47-E6B8FEABD242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

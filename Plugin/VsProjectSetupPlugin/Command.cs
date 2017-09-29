@@ -101,21 +101,23 @@
         {
             var projects = pjs.Where(a => a.Kind != ProjectKindConstants.VsProjectKindSolutionFolder);
             var folders = pjs.Where(a => a.Kind == ProjectKindConstants.VsProjectKindSolutionFolder);
-            var subProjects = folders.SelectMany(a => a.ProjectItems.OfType<ProjectItem>()).SelectMany(a => GetAllProjects(new[] { a.SubProject }));
+            var subProjects = folders.SelectMany(a => GetAllProjects(a.ProjectItems.OfType<ProjectItem>().Select(b => b.SubProject).Where(sp => sp != null)));
             return projects.Concat(subProjects);
         }
 
         private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
 
+        private static bool IsFullNameNotEmpty(Project p) => !string.IsNullOrWhiteSpace(p.FullName);
+
         private static IEnumerable<Project> GetWithoutWarningsAsErrors(IReadOnlyList<Project> projects)
         {
-            return projects.Where(
+            return projects.Where(IsFullNameNotEmpty).Where(
                 a => !CsProjContainsString(a, @"<TreatWarningsAsErrors>true</TreatWarningsAsErrors>"));
         }
 
         private static IEnumerable<Project> GetWithoutStyleCop(IReadOnlyList<Project> projects)
         {
-            return projects.Where(
+            return projects.Where(IsFullNameNotEmpty).Where(
                 project =>
                 {
                     var items = project.ProjectItems.Cast<ProjectItem>().ToList();
@@ -134,13 +136,13 @@
 
         private static IEnumerable<Project> GetWithoutStyleCopConfig(IReadOnlyList<Project> projects)
         {
-            return projects.Where(
+            return projects.Where(IsFullNameNotEmpty).Where(
                 project => !CsProjContainsString(project, @"<StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>"));
         }
 
         private static bool CsProjContainsString(Project p, string s)
         {
-            var projContent = System.IO.File.ReadAllText(p.FileName);
+            var projContent = System.IO.File.ReadAllText(p.FullName);
             return projContent.Contains(s);
         }
 
@@ -155,12 +157,13 @@
         {
             var title = "Results";
 
-            var projects = GetAllProjectsInCurrentSolution().ToArray();
+            // this filter shouldn't be required
+            var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).ToArray();
             var message =
-                $"All Projects :\n{Join(projects.Select(GetName).ToList())}\n\n" +
+                ////$"All Projects :\n{Join(projects.Select(GetName).ToList())}\n\n" +
                 $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
+                $"Projects without StyleCop.MsBuild installed:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
+                $"Projects with StyleCop Treat Errors As Warnings not set to false:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
             GetWithoutWarningsAsErrors(projects);
 
             // Show a message box to prove we were here
