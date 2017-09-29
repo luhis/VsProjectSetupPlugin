@@ -7,6 +7,8 @@
 
     using EnvDTE;
 
+    using EnvDTE80;
+
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
 
@@ -92,8 +94,15 @@
         private static IEnumerable<Project> GetAllProjectsInCurrentSolution()
         {
             var dte2 = (DTE)Package.GetGlobalService(typeof(DTE));
-            var res = dte2.Solution.Projects.Cast<Project>().Where(a => !string.IsNullOrWhiteSpace(a.FullName));
-            return res;
+            return GetAllProjects(dte2.Solution.Projects.OfType<Project>());
+        }
+
+        private static IEnumerable<Project> GetAllProjects(IEnumerable<Project> pjs)
+        {
+            var projects = pjs.Where(a => a.Kind != ProjectKindConstants.VsProjectKindSolutionFolder);
+            var folders = pjs.Where(a => a.Kind == ProjectKindConstants.VsProjectKindSolutionFolder).ToArray();
+            var subProjects = folders.SelectMany(a => a.ProjectItems.Cast<ProjectItem>()).SelectMany(a => GetAllProjects(new[] { a.SubProject })).ToArray();
+            return projects.Concat(subProjects);
         }
 
         private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
@@ -147,7 +156,8 @@
             var title = "Results";
 
             var projects = GetAllProjectsInCurrentSolution().ToArray();
-            var message = 
+            var message =
+                $"All Projects :\n{Join(projects.Select(GetName).ToList())}\n\n" +
                 $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
                 $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
                 $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";

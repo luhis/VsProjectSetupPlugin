@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldStyleProject", "OldStyle
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TesingFolders", "TesingFolders", "{4A1B67C8-9516-4CE1-9241-1C3450B0CD22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OldStyleProject2AllErrors", "OldStyleProject2AllErrors\OldStyleProject2AllErrors.csproj", "{BAA70CB1-7613-42A3-83F6-A387BBB2692E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +31,17 @@ Global
 		{FDCA19E5-5C00-4235-883B-0ACC65722295}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDCA19E5-5C00-4235-883B-0ACC65722295}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDCA19E5-5C00-4235-883B-0ACC65722295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAA70CB1-7613-42A3-83F6-A387BBB2692E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAA70CB1-7613-42A3-83F6-A387BBB2692E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAA70CB1-7613-42A3-83F6-A387BBB2692E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAA70CB1-7613-42A3-83F6-A387BBB2692E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FDCA19E5-5C00-4235-883B-0ACC65722295} = {4A1B67C8-9516-4CE1-9241-1C3450B0CD22}
+		{BAA70CB1-7613-42A3-83F6-A387BBB2692E} = {4A1B67C8-9516-4CE1-9241-1C3450B0CD22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6AE035EF-CC33-44DC-AEDC-C0390D526687}

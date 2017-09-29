@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="CommandPackage.cs" />
+    <Compile Include="ProjectKindConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
