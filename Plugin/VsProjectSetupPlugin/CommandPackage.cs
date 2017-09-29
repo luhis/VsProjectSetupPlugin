@@ -1,16 +1,17 @@
-﻿namespace WarningsAsErrors
+﻿using System;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.Win32;
+
+namespace HelloWorld
 {
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Runtime.InteropServices;
-
-    using EnvDTE;
-
-    using EnvDTE80;
-
-    using Microsoft.VisualStudio.Shell;
-
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
     /// </summary>
@@ -30,21 +31,20 @@
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
-    [Guid(VSPackage1.PackageGuidString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [Guid(CommandPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    public sealed class VSPackage1 : Package
+    public sealed class CommandPackage : Package
     {
-        private DTE2 dte2;
+        /// <summary>
+        /// CommandPackage GUID string.
+        /// </summary>
+        public const string PackageGuidString = "d7c67d52-1812-4c68-8ed8-bde4782aa83d";
 
         /// <summary>
-        /// VSPackage1 GUID string.
+        /// Initializes a new instance of the <see cref="Command"/> class.
         /// </summary>
-        public const string PackageGuidString = "782f8faa-e028-4799-a352-edba35ca423f";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VSPackage1"/> class.
-        /// </summary>
-        public VSPackage1()
+        public CommandPackage()
         {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
@@ -60,24 +60,8 @@
         /// </summary>
         protected override void Initialize()
         {
+            Command.Initialize(this);
             base.Initialize();
-
-            this.dte2 = (DTE2)this.GetService(typeof(DTE));
-
-            var events = this.dte2.Events.BuildEvents;
-
-            events.OnBuildBegin += this.OnBuildBegin;
-        }
-
-        private void OnBuildBegin(vsBuildScope Scope, vsBuildAction Action)
-        {
-            var a = this.dte2.Solution.Projects.Cast<Project>();
-            this.CheckProjects(a);
-        }
-
-        private void CheckProjects(IEnumerable<Project> projects)
-        {
-            projects.First();
         }
 
         #endregion
