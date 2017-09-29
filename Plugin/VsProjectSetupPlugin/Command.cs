@@ -1,4 +1,4 @@
-﻿namespace HelloWorld
+﻿namespace VsProjectSetupPlugin
 {
     using System;
     using System.Collections.Generic;
@@ -87,6 +87,8 @@
 
         private static string Join(IReadOnlyList<string> ss) => ss.Any() ? string.Join(", ", ss) : "NA";
 
+        private static string GetName(Project p) => p.UniqueName;
+
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -96,14 +98,14 @@
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            var title = "Command";
+            var title = "Results";
 
             var projects = this.GetAllProjectsInCurrentSolution().ToArray();
-            var projectNames = projects.Select(a => a.UniqueName).ToList();
+            var projectNames = projects.Select(GetName).ToList();
             var message = $"All Projects:\n{Join(projectNames)}\n\n" + 
-                $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(a => a.UniqueName).ToList())}\n\n" +
-                $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(a => a.UniqueName).ToList())}\n\n" +
-                $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(a => a.UniqueName).ToList())}";
+                $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
+                $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
+                $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
             GetWithoutWarningsAsErrors(projects);
 
             // Show a message box to prove we were here
