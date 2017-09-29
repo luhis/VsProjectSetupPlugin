@@ -87,9 +87,9 @@
             Instance = new Command(package);
         }
 
-        private static string Join(IReadOnlyList<string> ss) => ss.Any() ? string.Join(", ", ss) : "NA";
+        private static string Join(IReadOnlyList<string> ss) => ss.Any() ? string.Join("\n", ss) : "NA";
 
-        private static string GetName(Project p) => p.UniqueName;
+        private static string GetName(Project p) => p.Name;
 
         private static IEnumerable<Project> GetAllProjectsInCurrentSolution()
         {
