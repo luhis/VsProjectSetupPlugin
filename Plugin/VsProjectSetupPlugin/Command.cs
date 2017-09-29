@@ -26,13 +26,13 @@
         /// </summary>
         public static readonly Guid CommandSet = new Guid("1c3a4509-aa9f-4241-bd56-50a1430fb677");
 
+        private static readonly string StyleCopPackageName = "StyleCop.MSBuild";
+
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly Package package;
-
-        private DTE dte2;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="Command"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
@@ -89,39 +89,10 @@
 
         private static string GetName(Project p) => p.UniqueName;
 
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
-        private void MenuItemCallback(object sender, EventArgs e)
+        private static IEnumerable<Project> GetAllProjectsInCurrentSolution()
         {
-            var title = "Results";
-
-            var projects = this.GetAllProjectsInCurrentSolution().ToArray();
-            var projectNames = projects.Select(GetName).ToList();
-            var message = $"All Projects:\n{Join(projectNames)}\n\n" + 
-                $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
-            GetWithoutWarningsAsErrors(projects);
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-        }
-
-        private IEnumerable<Project> GetAllProjectsInCurrentSolution()
-        {
-            this.dte2 = (DTE)Package.GetGlobalService(typeof(DTE));
-            var res = this.dte2.Solution.Projects.Cast<Project>().Where(a => !string.IsNullOrWhiteSpace(a.FullName));
+            var dte2 = (DTE)Package.GetGlobalService(typeof(DTE));
+            var res = dte2.Solution.Projects.Cast<Project>().Where(a => !string.IsNullOrWhiteSpace(a.FullName));
             return res;
         }
 
@@ -133,27 +104,22 @@
                 a => !CsProjContainsString(a, @"<TreatWarningsAsErrors>true</TreatWarningsAsErrors>"));
         }
 
-        private static string GetPackagesText(Project p)
-        {
-            var items = p.ProjectItems.Cast<ProjectItem>().ToList();
-            var packagesJson = GetPackagesItem(items);
-            if (packagesJson != null)
-            {
-                return System.IO.File.ReadAllText(packagesJson.FileNames[0]);
-            }
-            else
-            {
-                return System.IO.File.ReadAllText(p.FullName);
-            }
-        }
-
         private static IEnumerable<Project> GetWithoutStyleCop(IReadOnlyList<Project> projects)
         {
             return projects.Where(
                 project =>
                 {
-                    var packagesContent = GetPackagesText(project);
-                    return !packagesContent.Contains("<package id=\"StyleCop.MSBuild\"");
+                    var items = project.ProjectItems.Cast<ProjectItem>().ToList();
+                    var packagesJson = GetPackagesItem(items);
+                    if (packagesJson != null)
+                    {
+                        var packagesContent = System.IO.File.ReadAllText(packagesJson.FileNames[0]);
+                        return !packagesContent.Contains($"<package id=\"{StyleCopPackageName}\"");
+                    }
+                    else
+                    {
+                        return !CsProjContainsString(project, $"<PackageReference Include=\"{StyleCopPackageName}\"");
+                    }
                 });
         }
 
@@ -167,6 +133,34 @@
         {
             var projContent = System.IO.File.ReadAllText(p.FileName);
             return projContent.Contains(s);
+        }
+
+        /// <summary>
+        /// This function is the callback used to execute the command when the menu item is clicked.
+        /// See the constructor to see how the menu item is associated with this function using
+        /// OleMenuCommandService service and MenuCommand class.
+        /// </summary>
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event args.</param>
+        private void MenuItemCallback(object sender, EventArgs e)
+        {
+            var title = "Results";
+
+            var projects = GetAllProjectsInCurrentSolution().ToArray();
+            var message = 
+                $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
+                $"Projects without StyleCop.MsBuild:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
+                $"Projects without StyleCop warnings as errors:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
+            GetWithoutWarningsAsErrors(projects);
+
+            // Show a message box to prove we were here
+            VsShellUtilities.ShowMessageBox(
+                this.ServiceProvider,
+                message,
+                title,
+                OLEMSGICON.OLEMSGICON_INFO,
+                OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
     }
 }
