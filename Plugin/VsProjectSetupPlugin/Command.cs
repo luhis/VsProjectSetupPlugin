@@ -100,8 +100,8 @@
         private static IEnumerable<Project> GetAllProjects(IEnumerable<Project> pjs)
         {
             var projects = pjs.Where(a => a.Kind != ProjectKindConstants.VsProjectKindSolutionFolder);
-            var folders = pjs.Where(a => a.Kind == ProjectKindConstants.VsProjectKindSolutionFolder).ToArray();
-            var subProjects = folders.SelectMany(a => a.ProjectItems.Cast<ProjectItem>()).SelectMany(a => GetAllProjects(new[] { a.SubProject })).ToArray();
+            var folders = pjs.Where(a => a.Kind == ProjectKindConstants.VsProjectKindSolutionFolder);
+            var subProjects = folders.SelectMany(a => a.ProjectItems.OfType<ProjectItem>()).SelectMany(a => GetAllProjects(new[] { a.SubProject }));
             return projects.Concat(subProjects);
         }
 
