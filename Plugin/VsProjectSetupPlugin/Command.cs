@@ -28,13 +28,21 @@
         /// </summary>
         public static readonly Guid CommandSet = new Guid("1c3a4509-aa9f-4241-bd56-50a1430fb677");
 
+        private static readonly IReadOnlyList<Rule> Rules =
+            new List<Rule>()
+                {
+                    new Rule("Projects without warnings as errors", p => !CsProjContainsString(p, @"<TreatWarningsAsErrors>true</TreatWarningsAsErrors>")),
+                    new Rule("Projects without StyleCop.MsBuild installed", p => !HasStyleCopInstalled(p)),
+                    new Rule("Projects with StyleCop Treat Errors As Warnings not set to false", p => !CsProjContainsString(p, @"<StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>"))
+                };
+
         private static readonly string StyleCopPackageName = "StyleCop.MSBuild";
 
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly Package package;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Command"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
@@ -49,7 +57,8 @@
 
             this.package = package;
 
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            OleMenuCommandService commandService =
+                this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
@@ -61,11 +70,7 @@
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static Command Instance
-        {
-            get;
-            private set;
-        }
+        public static Command Instance { get; private set; }
 
         /// <summary>
         /// Gets the service provider from the owner package.
@@ -101,43 +106,32 @@
         {
             var projects = pjs.Where(a => a.Kind != ProjectKindConstants.VsProjectKindSolutionFolder);
             var folders = pjs.Where(a => a.Kind == ProjectKindConstants.VsProjectKindSolutionFolder);
-            var subProjects = folders.SelectMany(a => GetAllProjects(a.ProjectItems.OfType<ProjectItem>().Select(b => b.SubProject).Where(sp => sp != null)));
+            var subProjects = folders.SelectMany(
+                a => GetAllProjects(
+                    a.ProjectItems.OfType<ProjectItem>().Select(b => b.SubProject).Where(sp => sp != null)));
             return projects.Concat(subProjects);
         }
 
-        private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
+        private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(
+            a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
 
         private static bool IsFullNameNotEmpty(Project p) => !string.IsNullOrWhiteSpace(p.FullName);
 
-        private static IEnumerable<Project> GetWithoutWarningsAsErrors(IReadOnlyList<Project> projects)
+        private static bool HasStyleCopInstalled(Project project)
         {
-            return projects.Where(IsFullNameNotEmpty).Where(
-                a => !CsProjContainsString(a, @"<TreatWarningsAsErrors>true</TreatWarningsAsErrors>"));
-        }
-
-        private static IEnumerable<Project> GetWithoutStyleCop(IReadOnlyList<Project> projects)
-        {
-            return projects.Where(IsFullNameNotEmpty).Where(
-                project =>
-                {
-                    var items = project.ProjectItems.Cast<ProjectItem>().ToList();
-                    var packagesJson = GetPackagesItem(items);
-                    if (packagesJson != null)
-                    {
-                        var packagesContent = System.IO.File.ReadAllText(packagesJson.FileNames[0]);
-                        return !packagesContent.Contains($"<package id=\"{StyleCopPackageName}\"");
-                    }
-                    else
-                    {
-                        return !CsProjContainsString(project, $"<PackageReference Include=\"{StyleCopPackageName}\"");
-                    }
-                });
-        }
-
-        private static IEnumerable<Project> GetWithoutStyleCopConfig(IReadOnlyList<Project> projects)
-        {
-            return projects.Where(IsFullNameNotEmpty).Where(
-                project => !CsProjContainsString(project, @"<StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>"));
+            var items = project.ProjectItems.Cast<ProjectItem>().ToList();
+            var packagesJson = GetPackagesItem(items);
+            if (packagesJson != null)
+            {
+                var packagesContent = System.IO.File.ReadAllText(packagesJson.FileNames[0]);
+                return packagesContent.Contains($"<package id=\"{StyleCopPackageName}\"");
+            }
+            else
+            {
+                return CsProjContainsString(
+                           project,
+                           $"<PackageReference Include=\"{StyleCopPackageName}\"");
+            }
         }
 
         private static bool CsProjContainsString(Project p, string s)
@@ -159,12 +153,9 @@
 
             // this filter shouldn't be required
             var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).ToArray();
-            var message =
-                ////$"All Projects :\n{Join(projects.Select(GetName).ToList())}\n\n" +
-                $"Projects without warnings as errors:\n{Join(GetWithoutWarningsAsErrors(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects without StyleCop.MsBuild installed:\n{Join(GetWithoutStyleCop(projects).Select(GetName).ToList())}\n\n" +
-                $"Projects with StyleCop Treat Errors As Warnings not set to false:\n{Join(GetWithoutStyleCopConfig(projects).Select(GetName).ToList())}";
-            GetWithoutWarningsAsErrors(projects);
+
+            var results = Rules.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}");
+            var message = string.Join("\n\n", results);
 
             // Show a message box to prove we were here
             VsShellUtilities.ShowMessageBox(
