@@ -13,3 +13,9 @@ This plugin is intended to work with:
 * Visual Studio 2017
 * Old style .vsproj files
 * New style .vsproj files
+
+Screenshots:
+
+![Menu](ScreenShots/Menu.png)
+
+![Results](ScreenShots/Results.png)
