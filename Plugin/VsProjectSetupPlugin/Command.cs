@@ -115,7 +115,17 @@
         private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(
             a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
 
-        private static bool IsFullNameNotEmpty(Project p) => !string.IsNullOrWhiteSpace(p.FullName);
+        private static bool IsFullNameNotEmpty(Project p)
+        {
+            try
+            {
+                return !string.IsNullOrWhiteSpace(p.FullName);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         private static bool HasStyleCopInstalled(Project project)
         {
