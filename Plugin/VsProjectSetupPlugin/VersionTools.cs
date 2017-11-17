@@ -7,8 +7,8 @@
 
     public static class VersionTools
     {
-        private static readonly IReadOnlyList<string> EndPointTargetVersions = new List<string> { "v4.6.2", "netcoreapp2.0" };
-        private static readonly string NonEndPointTargetVersion = "netstandard2.0";
+        private static readonly IReadOnlyList<string> EndPointTargetVersions = new List<string> { "v4.6.2", "netcoreapp2.0", "net462" };
+        private static readonly IReadOnlyList<string> NonEndPointTargetVersions = new List<string> { "v4.6.2", "netstandard2.0" };
         
         private static IReadOnlyList<string> GetFrameworkPossibilities(string version)
             => new List<string>
@@ -25,7 +25,7 @@
             }
             else
             {
-                return !GetFrameworkPossibilities(NonEndPointTargetVersion).Any(s => ProjectTools.CsProjContainsString(project, s));
+                return !NonEndPointTargetVersions.SelectMany(GetFrameworkPossibilities).Any(s => ProjectTools.CsProjContainsString(project, s));
             }
         }
     }
