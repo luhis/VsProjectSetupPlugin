@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="CommandPackage.cs" />
+    <Compile Include="Model\Proj.cs" />
+    <Compile Include="Model\ProjItem.cs" />
     <Compile Include="NuGetTools.cs" />
     <Compile Include="ProjectClassificationTools.cs" />
     <Compile Include="ProjectKindConstants.cs" />

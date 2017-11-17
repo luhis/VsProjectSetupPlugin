@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using EnvDTE;
+    using VsProjectSetupPlugin.Model;
 
     public static class VersionTools
     {
@@ -17,7 +17,7 @@
                        $"<TargetFrameworkVersion>{version}</TargetFrameworkVersion>" // Legacy
                    };
 
-        public static bool HasIncorrectVersion(Project project)
+        public static bool HasIncorrectVersion(Proj project)
         {
             if (ProjectClassificationTools.IsEndPoint(project))
             {

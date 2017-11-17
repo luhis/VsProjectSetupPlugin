@@ -12,6 +12,8 @@
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
 
+    using VsProjectSetupPlugin.Model;
+
     /// <summary>
     /// Command handler
     /// </summary>
@@ -84,7 +86,7 @@
 
         private static string Join(IReadOnlyList<string> ss) => ss.Any() ? string.Join("\n", ss) : "NA";
 
-        private static string GetName(Project p) => p.Name;
+        private static string GetName(Proj p) => p.Name;
 
         private static IEnumerable<Project> GetAllProjectsInCurrentSolution()
         {
@@ -114,6 +116,11 @@
             }
         }
 
+        private static Proj Map(Project project)
+        {
+            return new Proj(project.FullName, project.Name, project.ProjectItems.Cast<ProjectItem>().Select(a => new ProjItem(a.Name, a.FileNames[0])).ToList());
+        }
+
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -126,7 +133,7 @@
             var title = "Results";
 
             // this filter shouldn't be required
-            var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).ToArray();
+            var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).Select(Map).ToArray();
 
             var results = Rules.RuleSet.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}");
             var message = string.Join("\n\n", results);
