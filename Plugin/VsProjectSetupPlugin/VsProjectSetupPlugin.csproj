@@ -58,10 +58,14 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="CommandPackage.cs" />
+    <Compile Include="NuGetTools.cs" />
+    <Compile Include="ProjectClassificationTools.cs" />
     <Compile Include="ProjectKindConstants.cs" />
+    <Compile Include="ProjectTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Rules.cs" />
+    <Compile Include="VersionTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
