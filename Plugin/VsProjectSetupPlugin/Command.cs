@@ -27,17 +27,7 @@
         /// Command menu group (command set GUID).
         /// </summary>
         public static readonly Guid CommandSet = new Guid("1c3a4509-aa9f-4241-bd56-50a1430fb677");
-
-        private static readonly IReadOnlyList<Rule> Rules =
-            new List<Rule>()
-                {
-                    new Rule("Projects without warnings as errors", p => !CsProjContainsString(p, @"<TreatWarningsAsErrors>true</TreatWarningsAsErrors>")),
-                    new Rule("Projects without StyleCop.MsBuild installed", p => !HasStyleCopInstalled(p)),
-                    new Rule("Projects with StyleCop Treat Errors As Warnings not set to false", p => !CsProjContainsString(p, @"<StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>"))
-                };
-
-        private static readonly string StyleCopPackageName = "StyleCop.MSBuild";
-
+        
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
@@ -112,9 +102,6 @@
             return projects.Concat(subProjects);
         }
 
-        private static ProjectItem GetPackagesItem(IReadOnlyList<ProjectItem> items) => items.FirstOrDefault(
-            a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
-
         private static bool IsFullNameNotEmpty(Project p)
         {
             try
@@ -125,29 +112,6 @@
             {
                 return false;
             }
-        }
-
-        private static bool HasStyleCopInstalled(Project project)
-        {
-            var items = project.ProjectItems.Cast<ProjectItem>().ToList();
-            var packagesJson = GetPackagesItem(items);
-            if (packagesJson != null)
-            {
-                var packagesContent = System.IO.File.ReadAllText(packagesJson.FileNames[0]);
-                return packagesContent.Contains($"<package id=\"{StyleCopPackageName}\"");
-            }
-            else
-            {
-                return CsProjContainsString(
-                           project,
-                           $"<PackageReference Include=\"{StyleCopPackageName}\"");
-            }
-        }
-
-        private static bool CsProjContainsString(Project p, string s)
-        {
-            var projContent = System.IO.File.ReadAllText(p.FullName);
-            return projContent.Contains(s);
         }
 
         /// <summary>
@@ -164,7 +128,7 @@
             // this filter shouldn't be required
             var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).ToArray();
 
-            var results = Rules.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}");
+            var results = Rules.RuleSet.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}");
             var message = string.Join("\n\n", results);
 
             // Show a message box to prove we were here
