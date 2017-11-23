@@ -7,6 +7,8 @@ All projects should:
 * Have `Warnings as Errors` enabled
 * Have the StyleCop.MsBuild nuget installed
 * Have the StyleCop warnings as errors setting enabled
+* Not have app.config files in non-endpoint projects
+* Be .Net 4.6.2 or Core 2.0 for Endpoint projects or .Net 4.6.2 or Standard 2.0 for non-endpoint projects
 
 This plugin is intended to work with:
 
