@@ -61,6 +61,7 @@
     <Compile Include="CommandPackage.cs" />
     <Compile Include="Models\Proj.cs" />
     <Compile Include="Models\ProjItem.cs" />
+    <Compile Include="Tools\Ensure.cs" />
     <Compile Include="Tools\NuGetTools.cs" />
     <Compile Include="Tools\ProjectClassificationTools.cs" />
     <Compile Include="ProjectKindConstants.cs" />

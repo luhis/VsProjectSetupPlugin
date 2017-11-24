@@ -2,13 +2,15 @@
 {
     using System.Collections.Generic;
 
+    using VsProjectSetupPlugin.Tools;
+
     public class Proj
     {
         public Proj(string fullName, string name, IReadOnlyList<ProjItem> projectItems)
         {
-            this.FullName = fullName;
-            this.Name = name;
-            this.ProjectItems = projectItems;
+            this.FullName = Ensure.ThrowIfNull(fullName, nameof(fullName));
+            this.Name = Ensure.ThrowIfNull(name, nameof(name));
+            this.ProjectItems = Ensure.ThrowIfNull(projectItems, nameof(projectItems));
         }
 
         public string FullName { get; }
