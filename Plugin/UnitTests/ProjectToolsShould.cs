@@ -34,7 +34,7 @@
         public void HasFileTrue()
         {
             var searchName = "abc.xyz";
-            var res = HasFile(new List<ProjItem>() { new ProjItem(searchName, searchName) }, searchName);
+            var res = HasFile(new Proj("aaaaa", "bbb", new List<ProjItem>() { new ProjItem(searchName, searchName) }), searchName);
             res.Should().BeTrue();
         }
 
@@ -42,7 +42,7 @@
         public void HasFileFalse()
         {
             var searchName = "abc.xyz";
-            var res = HasFile(new List<ProjItem>(), searchName);
+            var res = HasFile(new Proj("aaaaa", "bbb", new List<ProjItem>()), searchName);
             res.Should().BeFalse();
         }
     }

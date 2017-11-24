@@ -1,6 +1,5 @@
 ﻿namespace VsProjectSetupPlugin.Tools
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using VsProjectSetupPlugin.Models;
@@ -13,7 +12,7 @@
             return projContent.Contains(s);
         }
         
-        public static bool HasFile(IEnumerable<ProjItem> items, string needle) =>
-            items.FirstOrDefault(p => p.Name.ToLowerInvariant().EndsWith(needle.ToLowerInvariant())) != null;
+        public static bool HasFile(Proj project, string needle) =>
+            project.ProjectItems.FirstOrDefault(p => p.Name.ToLowerInvariant().EndsWith(needle.ToLowerInvariant())) != null;
     }
 }

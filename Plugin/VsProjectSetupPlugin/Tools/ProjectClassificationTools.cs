@@ -7,8 +7,7 @@
         public static bool IsEndPoint(Proj project)
         {
             // Endpoint could be a console app, a webforms app, an mvc app, or an NServiceBus Host
-            var items = project.ProjectItems;
-            if (ProjectTools.HasFile(items, "web.config"))
+            if (ProjectTools.HasFile(project, "web.config"))
             {
                 // mvc app, webforms app
                 return true;
@@ -35,7 +34,7 @@
 
         public static bool HasAppDotConfigButNotEndPoint(Proj project)
         {
-            var hasAppConfig = ProjectTools.HasFile(project.ProjectItems, "app.config");
+            var hasAppConfig = ProjectTools.HasFile(project, "app.config");
             if (!hasAppConfig)
             {
                 return false;
