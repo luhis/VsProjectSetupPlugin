@@ -4,7 +4,7 @@ This plugin is intended to help ensure that Visual Studio projects follow some s
 
 All projects should:
 
-* Have `Warnings as Errors` enabled
+* Have "Warnings as Errors" enabled
 * Have the StyleCop.MsBuild nuget installed
 * Have the StyleCop warnings as errors setting enabled
   * E.g. have `<StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>` is the csproj file
