@@ -15,6 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -69,12 +71,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NuGetToolsTests.cs" />
+    <Compile Include="NuGetToolsWithDotCsProjShould.cs" />
+    <Compile Include="NuGetToolsWithPackagesDotConfigShould.cs" />
+    <Compile Include="ProjectClassificationToolsShould.cs" />
+    <Compile Include="ProjectToolsShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionToolsShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TestFiles\stylecop.config" />
+    <None Include="TestFiles\packages.config\nservicebushost.config" />
+    <None Include="TestFiles\packages.config\xunit.config" />
+    <None Include="TestFiles\packages.config\stylecop.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
@@ -86,7 +94,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestFiles\empty.config" />
+    <None Include="TestFiles\packages.config\empty.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TestFiles\MyProject.csproj\new\foursixtwo.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\standardtwo.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\coretwo.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\nservicebushost.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\xunit.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\stylecop.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\new\empty.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\old\foursixtwo.csproj" />
+    <Content Include="TestFiles\MyProject.csproj\old\empty.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -95,6 +115,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.props'))" />
     <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.targets'))" />
+    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.5.0.0\build\StyleCop.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.5.0.0\build\StyleCop.MSBuild.targets'))" />
   </Target>
   <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
+  <Import Project="..\packages\StyleCop.MSBuild.5.0.0\build\StyleCop.MSBuild.targets" Condition="Exists('..\packages\StyleCop.MSBuild.5.0.0\build\StyleCop.MSBuild.targets')" />
 </Project>

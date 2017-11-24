@@ -1,9 +1,9 @@
-﻿namespace VsProjectSetupPlugin
+﻿namespace VsProjectSetupPlugin.Tools
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using VsProjectSetupPlugin.Model;
+    using VsProjectSetupPlugin.Models;
 
     public static class NuGetTools
     {

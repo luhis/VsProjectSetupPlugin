@@ -12,7 +12,8 @@
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
 
-    using VsProjectSetupPlugin.Model;
+    using VsProjectSetupPlugin.Models;
+    using VsProjectSetupPlugin.Tools;
 
     /// <summary>
     /// Command handler

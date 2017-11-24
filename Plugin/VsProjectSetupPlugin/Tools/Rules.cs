@@ -1,6 +1,8 @@
-﻿namespace VsProjectSetupPlugin
+﻿namespace VsProjectSetupPlugin.Tools
 {
     using System.Collections.Generic;
+
+    using VsProjectSetupPlugin.Models;
 
     public static class Rules
     {

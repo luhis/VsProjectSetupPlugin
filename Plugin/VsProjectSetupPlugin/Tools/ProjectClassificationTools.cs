@@ -1,6 +1,6 @@
-﻿namespace VsProjectSetupPlugin
+﻿namespace VsProjectSetupPlugin.Tools
 {
-    using VsProjectSetupPlugin.Model;
+    using VsProjectSetupPlugin.Models;
 
     public static class ProjectClassificationTools
     {

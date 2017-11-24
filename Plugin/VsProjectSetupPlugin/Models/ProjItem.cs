@@ -1,4 +1,4 @@
-﻿namespace VsProjectSetupPlugin.Model
+﻿namespace VsProjectSetupPlugin.Models
 {
     public class ProjItem
     {

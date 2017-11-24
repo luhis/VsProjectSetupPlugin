@@ -1,4 +1,4 @@
-﻿namespace VsProjectSetupPlugin.Model
+﻿namespace VsProjectSetupPlugin.Models
 {
     using System.Collections.Generic;
 

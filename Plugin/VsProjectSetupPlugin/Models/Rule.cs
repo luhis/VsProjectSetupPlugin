@@ -1,8 +1,6 @@
-﻿namespace VsProjectSetupPlugin
+﻿namespace VsProjectSetupPlugin.Models
 {
     using System;
-
-    using VsProjectSetupPlugin.Model;
 
     public class Rule
     {
