@@ -106,6 +106,7 @@
     <Content Include="TestFiles\MyProject.csproj\new\xunit.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\stylecop.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\empty.csproj" />
+    <None Include="TestFiles\MyProject.csproj\old\databaseproject.sqlproj" />
     <Content Include="TestFiles\MyProject.csproj\old\foursixtwo.csproj" />
     <Content Include="TestFiles\MyProject.csproj\old\empty.csproj" />
   </ItemGroup>

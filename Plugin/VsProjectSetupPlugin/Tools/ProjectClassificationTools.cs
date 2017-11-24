@@ -45,5 +45,7 @@
                 return !IsEndPoint(project);
             }
         }
+
+        public static bool IsDatabaseProject(Proj project) => project.FullName.EndsWith(".sqlproj");
     }
 }

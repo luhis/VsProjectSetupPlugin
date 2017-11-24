@@ -48,5 +48,27 @@
             var res = HasAppDotConfigButNotEndPoint(proj);
             res.Should().BeFalse();
         }
+
+        [Fact]
+        public void ShowIsDatabaseProject()
+        {
+            var proj = new Proj(
+                $"../../TestFiles/{ItemName}/old/databaseproject.sqlproj",
+                "My Project",
+                new List<ProjItem>());
+            var res = IsDatabaseProject(proj);
+            res.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ShowIsNotDatabaseProject()
+        {
+            var proj = new Proj(
+                $"../../TestFiles/{ItemName}/old/empty.csproj",
+                "My Project",
+                new List<ProjItem>());
+            var res = IsDatabaseProject(proj);
+            res.Should().BeFalse();
+        }
     }
 }
