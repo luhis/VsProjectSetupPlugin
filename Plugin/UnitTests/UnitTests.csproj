@@ -74,6 +74,7 @@
     <Compile Include="NuGetToolsWithDotCsProjShould.cs" />
     <Compile Include="NuGetToolsWithPackagesDotConfigShould.cs" />
     <Compile Include="ProjectClassificationToolsShould.cs" />
+    <Compile Include="ProjectSettingsToolsShould.cs" />
     <Compile Include="ProjectToolsShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThrowIfNullShould.cs" />
@@ -99,6 +100,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="TestFiles\MyProject.csproj\new\warningsaserrors.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\foursixtwo.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\standardtwo.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\coretwo.csproj" />

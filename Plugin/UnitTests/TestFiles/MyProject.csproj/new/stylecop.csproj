@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
   </ItemGroup>
