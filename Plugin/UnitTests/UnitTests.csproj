@@ -98,8 +98,11 @@
   <ItemGroup>
     <None Include="TestFiles\packages.config\empty.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\MyProject.csproj\new\standardBrokenNuget.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\warningsaserrors.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\foursixtwo.csproj" />
     <Content Include="TestFiles\MyProject.csproj\new\standardtwo.csproj" />
