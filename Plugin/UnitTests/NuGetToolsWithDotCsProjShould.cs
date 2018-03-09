@@ -62,5 +62,13 @@
 
             HasXUnitInstalled(proj).Should().BeTrue();
         }
+
+        [Fact]
+        public void FindBadNuget()
+        {
+            var proj = new Proj($"../../TestFiles/{ItemName}/new/standardBrokenNuget.csproj", "My Project", new List<ProjItem>());
+
+            HasBadNugetPackages(proj).Should().BeTrue();
+        }
     }
 }

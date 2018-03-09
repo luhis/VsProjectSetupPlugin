@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using VsProjectSetupPlugin.Models;
 
@@ -39,5 +40,7 @@
 
         private static ProjItem GetPackagesItem(IReadOnlyList<ProjItem> items) => items.FirstOrDefault(
             a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
+
+        public static bool HasBadNugetPackages(Proj p) => ProjectTools.CsProjContainsString(p, @"<HintPath>C:\Users\");
     }
 }
