@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="HelloWorld.8aa8b53a-8ed1-42fd-a03d-bb0ef8665144" Version="1.4" Language="en-US" Publisher="Matthew McCorry" />
+        <Identity Id="HelloWorld.8aa8b53a-8ed1-42fd-a03d-bb0ef8665144" Version="1.5" Language="en-US" Publisher="Matthew McCorry" />
         <DisplayName>VS Project Setup Plugin</DisplayName>
         <Description xml:space="preserve">Check that all the projects in your solution have: warnings as errors, StyleCop.MsBuild installed and StyleCop Treat Errors As Warnings set to false</Description>
     </Metadata>

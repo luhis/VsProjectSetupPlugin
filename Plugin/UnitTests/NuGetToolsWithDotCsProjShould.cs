@@ -70,5 +70,13 @@
 
             HasBadNugetPackages(proj).Should().BeTrue();
         }
+
+        [Fact]
+        public void FindBadNuget2()
+        {
+            var proj = new Proj($"../../TestFiles/{ItemName}/new/standardBrokenNugetFallbackFolder.csproj", "My Project", new List<ProjItem>());
+
+            HasBadNugetPackages(proj).Should().BeTrue();
+        }
     }
 }

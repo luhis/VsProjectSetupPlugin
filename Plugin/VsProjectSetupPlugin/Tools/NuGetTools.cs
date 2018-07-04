@@ -38,9 +38,13 @@
         public static bool HasXUnitInstalled(Proj project) =>
             HasNuGetPackageInstalled(project, XUnitPackageName);
 
-        private static ProjItem GetPackagesItem(IReadOnlyList<ProjItem> items) => items.FirstOrDefault(
-            a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
+        private static ProjItem GetPackagesItem(IReadOnlyList<ProjItem> items) =>
+            items.FirstOrDefault(a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
 
-        public static bool HasBadNugetPackages(Proj p) => ProjectTools.CsProjContainsString(p, @"<HintPath>C:\Users\");
+        public static bool HasBadNugetPackages(Proj p)
+        {
+            var fails = new[] { @"<HintPath>C:\Users\", @"<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\" };
+            return fails.Any(f => ProjectTools.CsProjContainsString(p, f));
+        }
     }
 }
