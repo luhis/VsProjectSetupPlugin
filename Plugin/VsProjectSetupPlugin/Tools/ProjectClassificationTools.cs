@@ -4,7 +4,7 @@
 
     public static class ProjectClassificationTools
     {
-        public static bool IsEndPoint(Proj project)
+        private static bool IsEndPoint(Proj project)
         {
             // Endpoint could be a console app, a webforms app, an mvc app, or an NServiceBus Host
             if (ProjectTools.HasFile(project, "web.config"))

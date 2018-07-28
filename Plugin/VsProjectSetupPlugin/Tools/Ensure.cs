@@ -4,7 +4,7 @@
 
     public static class Ensure
     {
-        public static T ThrowIfNull<T>(T o, string name) where T : class 
+        public static T ThrowIfNull<T>(T o, string name) where T : class
         {
             if (o == null)
             {

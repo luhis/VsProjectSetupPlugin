@@ -9,10 +9,10 @@ namespace VsProjectSetupPlugin.Tools
 
     public static class ProjectTools
     {
-        private  static readonly Regex OldPattern =  new Regex(@"<TargetFrameworkVersion>(.+)<\/TargetFrameworkVersion>", RegexOptions.IgnoreCase);
+        private static readonly Regex OldPattern = new Regex(@"<TargetFrameworkVersion>(.+)<\/TargetFrameworkVersion>", RegexOptions.IgnoreCase);
         private static readonly Regex NewPattern = new Regex(@"<TargetFramework>(.+)<\/TargetFramework>", RegexOptions.IgnoreCase);
 
-        private  static readonly IEnumerable<Regex> versionPatterns = new List<Regex>() {OldPattern, NewPattern};
+        private static readonly IEnumerable<Regex> VersionPatterns = new List<Regex>() { OldPattern, NewPattern };
 
         public static bool CsProjContainsString(Proj p, string s)
         {
@@ -23,7 +23,7 @@ namespace VsProjectSetupPlugin.Tools
         public static string GetVersion(Proj p)
         {
             var projContent = System.IO.File.ReadAllText(p.FullName);
-            var res = versionPatterns.Select(a => a.Match(projContent)).Single(a => a.Success);
+            var res = VersionPatterns.Select(a => a.Match(projContent)).Single(a => a.Success);
             return res.Groups[1].Captures[0].Value;
         }
 

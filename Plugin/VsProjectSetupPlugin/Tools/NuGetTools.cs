@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using VsProjectSetupPlugin.Models;
 
@@ -39,7 +38,7 @@
             HasNuGetPackageInstalled(project, XUnitPackageName);
 
         private static ProjItem GetPackagesItem(IReadOnlyList<ProjItem> items) =>
-            items.FirstOrDefault(a => a.Name.ToLowerInvariant().EndsWith("packages.config".ToLowerInvariant()));
+            items.FirstOrDefault(a => a.Name.EndsWith("packages.config", System.StringComparison.InvariantCultureIgnoreCase));
 
         public static bool HasBadNugetPackages(Proj p)
         {
