@@ -18,7 +18,7 @@
                     var r = Ensure.ThrowIfNull<object>(null, "test");
                     r.Should().NotBeNull();
                 };
-            var ex = a.ShouldThrow<ArgumentException>();
+            var ex = a.Should().Throw<ArgumentException>();
             ex.WithMessage("Value cannot be null.\r\nParameter name: test");
         }
 
