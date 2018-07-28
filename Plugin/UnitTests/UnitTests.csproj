@@ -75,7 +75,6 @@
     <Compile Include="ProjectToolsShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThrowIfNullShould.cs" />
-    <Compile Include="VersionToolsShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -136,7 +136,9 @@
             // this filter shouldn't be required
             var projects = GetAllProjectsInCurrentSolution().Where(IsFullNameNotEmpty).Select(Map).ToArray();
 
-            var results = Rules.RuleSet.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}");
+
+            var results = Rules.RuleSet.Select(r => $"{r.Header}:\n{Join(projects.Where(r.Where).Select(GetName).ToList())}")
+                .Concat(new [] {$".Net Versions:\n{Join(VersionTools.GetAllVersions(projects))}"});
             var message = string.Join("\n\n", results);
 
             // Show a message box to prove we were here
