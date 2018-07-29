@@ -16,18 +16,22 @@ namespace VsProjectSetupPlugin.Tools
 
         public static bool CsProjContainsString(Proj p, string s)
         {
-            var projContent = System.IO.File.ReadAllText(p.FullName);
-            return projContent.Contains(s);
+            return p.ProjectFileContent.Contains(s);
         }
 
         public static string GetVersion(Proj p)
         {
-            var projContent = System.IO.File.ReadAllText(p.FullName);
-            var res = VersionPatterns.Select(a => a.Match(projContent)).Single(a => a.Success);
+            var res = VersionPatterns.Select(a => a.Match(p.ProjectFileContent)).Single(a => a.Success);
             return res.Groups[1].Captures[0].Value;
         }
 
         public static bool HasFile(Proj project, string needle) =>
             project.ProjectItems.FirstOrDefault(p => p.Name.EndsWith(needle, System.StringComparison.InvariantCultureIgnoreCase)) != null;
+
+        public static bool IsCoreStyleProject(Proj proj)
+        {
+            var res = NewPattern.Match(proj.ProjectFileContent);
+            return res.Success;
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace VsProjectSetupPlugin.Tools
+﻿using System;
+using System.Linq;
+
+namespace VsProjectSetupPlugin.Tools
 {
     using System.Collections.Generic;
 
@@ -16,7 +19,17 @@
                     new Rule("Projects with improperly added Nuget packages", NuGetTools.HasBadNugetPackages)
                 };
 
-        private static bool IsNotDbAndDoesNotHaveStyleCop(Proj p) => !ProjectClassificationTools.IsDatabaseProject(p) && !NuGetTools.HasStyleCopInstalled(p);
+        private static bool IsNotDbAndDoesNotHaveStyleCop(Proj proj)
+        {
+            var a = new List<Func<Proj, bool>>
+            {
+                p => !ProjectTools.IsCoreStyleProject(p),
+                p => !ProjectClassificationTools.IsDatabaseProject(p),
+                p => !NuGetTools.HasStyleCopInstalled(p)
+            };
+
+            return a.All(f => f(proj));
+        }
 
         private static bool IsNotDbAndDoesNotHaveStyleCopSetting(Proj p) => !ProjectClassificationTools.IsDatabaseProject(p) && !ProjectSettingsTools.HasStyleCopSetting(p);
     }

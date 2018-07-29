@@ -39,7 +39,7 @@ namespace UnitTests
         public void HasFileTrue()
         {
             var searchName = "abc.xyz";
-            var res = HasFile(new Proj("aaaaa", "bbb", new List<ProjItem>() { new ProjItem(searchName, searchName) }), searchName);
+            var res = HasFile(new Proj("../../UnitTests.csproj", "bbb", new List<ProjItem>() { new ProjItem(searchName, searchName) }), searchName);
             res.Should().BeTrue();
         }
 
@@ -47,7 +47,7 @@ namespace UnitTests
         public void HasFileFalse()
         {
             var searchName = "abc.xyz";
-            var res = HasFile(new Proj("aaaaa", "bbb", new List<ProjItem>()), searchName);
+            var res = HasFile(new Proj("../../UnitTests.csproj", "bbb", new List<ProjItem>()), searchName);
             res.Should().BeFalse();
         }
 
@@ -63,6 +63,20 @@ namespace UnitTests
         {
             var version = ProjectTools.GetVersion(FourSixTwoProjOld);
             version.Should().Be("v4.6.2");
+        }
+
+        [Fact]
+        public void ReturnIsCoreStyleProject()
+        {
+            var r = ProjectTools.IsCoreStyleProject(FourSixTwoProjNew);
+            r.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnIsNoCoreStyleProject()
+        {
+            var r = ProjectTools.IsCoreStyleProject(FourSixTwoProjOld);
+            r.Should().BeFalse();
         }
     }
 }
