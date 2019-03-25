@@ -1,4 +1,6 @@
-﻿namespace UnitTests
+﻿using System.IO;
+
+namespace UnitTests
 {
     using System.Collections.Generic;
 
@@ -18,7 +20,8 @@
         [Fact]
         public void NotFindStyleCop()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/{EmptyName}", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/{EmptyName}";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasStyleCopInstalled(proj).Should().BeFalse();
         }
@@ -26,7 +29,8 @@
         [Fact]
         public void FindStyleCop()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/stylecop.csproj", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/stylecop.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasStyleCopInstalled(proj).Should().BeTrue();
         }
@@ -34,7 +38,8 @@
         [Fact]
         public void NotFindNServiceBus()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/{EmptyName}", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/{EmptyName}";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasNServiceBusHostInstalled(proj).Should().BeFalse();
         }
@@ -42,7 +47,8 @@
         [Fact]
         public void FindNServiceBus()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/nservicebushost.csproj", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/nservicebushost.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasNServiceBusHostInstalled(proj).Should().BeTrue();
         }
@@ -50,7 +56,8 @@
         [Fact]
         public void NotFindXunit()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/{EmptyName}", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/{EmptyName}";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasXUnitInstalled(proj).Should().BeFalse();
         }
@@ -58,7 +65,8 @@
         [Fact]
         public void FindXunit()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/xunit.csproj", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/xunit.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasXUnitInstalled(proj).Should().BeTrue();
         }
@@ -66,7 +74,8 @@
         [Fact]
         public void FindBadNuget()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/standardBrokenNuget.csproj", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/standardBrokenNuget.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasBadNugetPackages(proj).Should().BeTrue();
         }
@@ -74,7 +83,17 @@
         [Fact]
         public void FindBadNuget2()
         {
-            var proj = new Proj($"../../TestFiles/{ItemName}/new/standardBrokenNugetFallbackFolder.csproj", "My Project", new List<ProjItem>());
+            var fullName = $"../../TestFiles/{ItemName}/new/standardBrokenNugetFallbackFolder.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
+
+            HasBadNugetPackages(proj).Should().BeTrue();
+        }
+
+        [Fact]
+        public void FindBadNuget3()
+        {
+            var fullName = $"../../TestFiles/{ItemName}/new/standardBrokenNugetFallbackFolderRelative.csproj";
+            var proj = new Proj(fullName, "My Project", File.ReadAllText(fullName), new List<ProjItem>());
 
             HasBadNugetPackages(proj).Should().BeTrue();
         }

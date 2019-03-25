@@ -1,4 +1,6 @@
-﻿namespace UnitTests
+﻿using System.IO;
+
+namespace UnitTests
 {
     using System.Collections.Generic;
 
@@ -18,7 +20,8 @@
         [Fact]
         public void NotFindStyleCop()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+            "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
 
             HasStyleCopInstalled(proj).Should().BeFalse();
         }
@@ -26,7 +29,8 @@
         [Fact]
         public void FindStyleCop()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/stylecop.config") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+                "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/stylecop.config") });
 
             HasStyleCopInstalled(proj).Should().BeTrue();
         }
@@ -34,7 +38,8 @@
         [Fact]
         public void NotFindNServiceBus()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+                "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
 
             HasNServiceBusHostInstalled(proj).Should().BeFalse();
         }
@@ -42,7 +47,8 @@
         [Fact]
         public void FindNServiceBus()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/nservicebushost.config") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+                "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/nservicebushost.config") });
 
             HasNServiceBusHostInstalled(proj).Should().BeTrue();
         }
@@ -50,7 +56,8 @@
         [Fact]
         public void NotFindXunit()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+                "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/{EmptyName}") });
 
             HasXUnitInstalled(proj).Should().BeFalse();
         }
@@ -58,7 +65,8 @@
         [Fact]
         public void FindXunit()
         {
-            var proj = new Proj("MyProject.csproj", "My Project", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/xunit.config") });
+            var proj = new Proj("MyProject.csproj", "My Project",
+                "", new List<ProjItem> { new ProjItem(ItemName, $"../../TestFiles/{ItemName}/xunit.config") });
 
             HasXUnitInstalled(proj).Should().BeTrue();
         }

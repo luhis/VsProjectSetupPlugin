@@ -6,12 +6,11 @@
 
     public class Proj
     {
-        public Proj(string fullName, string name, IReadOnlyList<ProjItem> projectItems)
+        public Proj(string fullName, string name, string projFileContent, IReadOnlyList<ProjItem> projectItems)
         {
             this.FullName = Ensure.ThrowIfNull(fullName, nameof(fullName));
             this.Name = Ensure.ThrowIfNull(name, nameof(name));
-            var projContent = System.IO.File.ReadAllText(fullName);
-            this.ProjectFileContent = projContent;
+            this.ProjectFileContent = projFileContent;
             this.ProjectItems = Ensure.ThrowIfNull(projectItems, nameof(projectItems));
         }
 

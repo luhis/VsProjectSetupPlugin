@@ -1,4 +1,6 @@
-﻿namespace UnitTests
+﻿using System.IO;
+
+namespace UnitTests
 {
     using System.Collections.Generic;
 
@@ -19,9 +21,11 @@
         [Fact]
         public void HasAppDotConfigButNotEndPointTrue()
         {
+            var fullName = $"../../TestFiles/{ItemName}/new/{EmptyName}";
             var proj = new Proj(
-                $"../../TestFiles/{ItemName}/new/{EmptyName}",
+                fullName,
                 "My Project",
+                File.ReadAllText(fullName),
                 new List<ProjItem>() { new ProjItem("app.config", "app.config") });
             var res = HasAppDotConfigButNotEndPoint(proj);
             res.Should().BeTrue();
@@ -30,9 +34,11 @@
         [Fact]
         public void HasAppDotConfigButNotEndPointFalse()
         {
+            var fullName = $"../../TestFiles/{ItemName}/new/{EmptyName}";
             var proj = new Proj(
-                $"../../TestFiles/{ItemName}/new/{EmptyName}",
+                fullName,
                 "My Project",
+                File.ReadAllText(fullName),
                 new List<ProjItem>());
             var res = HasAppDotConfigButNotEndPoint(proj);
             res.Should().BeFalse();
@@ -41,9 +47,11 @@
         [Fact]
         public void HasAppDotConfigButNotEndPointNsbHostTrue()
         {
+            var fullName = $"../../TestFiles/{ItemName}/new/nservicebushost.csproj";
             var proj = new Proj(
-                $"../../TestFiles/{ItemName}/new/nservicebushost.csproj",
+                fullName,
                 "My Project",
+                File.ReadAllText(fullName),
                 new List<ProjItem>() { new ProjItem("app.config", "app.config") });
             var res = HasAppDotConfigButNotEndPoint(proj);
             res.Should().BeFalse();
@@ -52,9 +60,11 @@
         [Fact]
         public void ShowIsDatabaseProject()
         {
+            var fullName = $"../../TestFiles/{ItemName}/old/databaseproject.sqlproj";
             var proj = new Proj(
-                $"../../TestFiles/{ItemName}/old/databaseproject.sqlproj",
+                fullName,
                 "My Project",
+                File.ReadAllText(fullName),
                 new List<ProjItem>());
             var res = IsDatabaseProject(proj);
             res.Should().BeTrue();
@@ -63,9 +73,11 @@
         [Fact]
         public void ShowIsNotDatabaseProject()
         {
+            var fullName = $"../../TestFiles/{ItemName}/old/empty.csproj";
             var proj = new Proj(
-                $"../../TestFiles/{ItemName}/old/empty.csproj",
+                fullName,
                 "My Project",
+                File.ReadAllText(fullName),
                 new List<ProjItem>());
             var res = IsDatabaseProject(proj);
             res.Should().BeFalse();

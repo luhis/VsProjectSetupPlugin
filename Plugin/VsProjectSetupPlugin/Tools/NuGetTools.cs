@@ -1,4 +1,6 @@
-﻿namespace VsProjectSetupPlugin.Tools
+﻿using System.Text.RegularExpressions;
+
+namespace VsProjectSetupPlugin.Tools
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -40,10 +42,12 @@
         private static ProjItem GetPackagesItem(IReadOnlyList<ProjItem> items) =>
             items.FirstOrDefault(a => a.Name.EndsWith("packages.config", System.StringComparison.InvariantCultureIgnoreCase));
 
+        private static readonly Regex RegexInvalidPackage = new Regex(@"<HintPath>(.+)..\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\", RegexOptions.IgnoreCase);
+
         public static bool HasBadNugetPackages(Proj p)
         {
             var fails = new[] { @"<HintPath>C:\Users\", @"<HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\" };
-            return fails.Any(f => ProjectTools.CsProjContainsString(p, f));
+            return fails.Any(f => ProjectTools.CsProjContainsString(p, f)) || ProjectTools.CsProjMatches(p, RegexInvalidPackage);
         }
     }
 }

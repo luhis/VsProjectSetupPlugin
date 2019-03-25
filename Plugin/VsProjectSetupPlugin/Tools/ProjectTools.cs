@@ -19,6 +19,11 @@ namespace VsProjectSetupPlugin.Tools
             return p.ProjectFileContent.Contains(s);
         }
 
+        public static bool CsProjMatches(Proj p, Regex r)
+        {
+            return r.Match(p.ProjectFileContent).Success;
+        }
+
         public static string GetVersion(Proj p)
         {
             var res = VersionPatterns.Select(a => a.Match(p.ProjectFileContent)).Single(a => a.Success);

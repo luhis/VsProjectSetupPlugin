@@ -119,7 +119,7 @@
 
         private static Proj Map(Project project)
         {
-            return new Proj(project.FullName, project.Name, project.ProjectItems.Cast<ProjectItem>().Select(a => new ProjItem(a.Name, a.FileNames[0])).ToList());
+            return new Proj(project.FullName, project.Name, System.IO.File.ReadAllText(project.FullName), project.ProjectItems.Cast<ProjectItem>().Select(a => new ProjItem(a.Name, a.FileNames[0])).ToList());
         }
 
         /// <summary>
